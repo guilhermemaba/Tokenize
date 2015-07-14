@@ -288,9 +288,30 @@
         resizeSearchInput: function(){
 
             this.searchInput.attr('size', (this.searchInput.val().length > 1 ? this.searchInput.val().length : 5));
+            this.resizeContainer();
             this.updatePlaceholder();
 
         },
+
+        resizeContainer: function(){
+
+            if(this.options.resizeContainer){
+                var tokens_width = 0;
+                $('li.Token', this.tokensContainer).each(function() {
+                    tokens_width += $(this).outerWidth(true);
+                });
+
+                widthContainer = $(this.tokensContainer).outerWidth(true);
+                widthLimit = widthContainer - ((widthContainer * 10) /100);
+                lines = Math.ceil(tokens_width/widthLimit) + 1;
+                tokenHeight = $('li.Token',this.tokensContainer).outerHeight(true);
+                if (tokens_width != 0){
+                    $(this.tokensContainer).height((lines*tokenHeight) +5);
+                }
+            }
+        },
+
+
 
         resetSearchInput: function(){
 
@@ -637,6 +658,7 @@
         nbDropdownElements: 10,
         displayDropdownOnFocus: false,
         maxElements: 0,
+        resizeContainer: false,
         sortable: false,
         dataType: 'json',
         valueField: 'value',
